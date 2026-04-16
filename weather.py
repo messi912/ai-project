@@ -17,7 +17,7 @@ def get_coordinates(city):
 
 def get_weather(latitude, longitude):
     try:
-        response = requests.get(f"https://api.broken-url.com ")
+        response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true")
         data = response.json()
         return data["current_weather"]
     except Exception as e:
@@ -37,24 +37,3 @@ weather_codes = {
     75: "Heavy snow",
     95: "Thunderstorm",
 }
-
-city = input("Enter a city name: ")
-
-coordinates = get_coordinates(city)
-
-if coordinates is None:
-    print("City not found. Please try again.")
-else:
-    latitude, longitude, name, country = coordinates
-    weather = get_weather(latitude, longitude)
-
-    if weather is None:
-        print("Could not fetch weather data. Please try again.")
-    else:
-        code = weather["weathercode"]
-        description = weather_codes.get(code, "Unknown conditions")
-
-        print(f"\nWeather in {name}, {country}:")
-        print(f"Temperature: {weather['temperature']}°C")
-        print(f"Wind speed: {weather['windspeed']} km/h")
-        print(f"Conditions: {description}")
